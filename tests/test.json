@@ -1,0 +1,37 @@
+{
+  "spatialEP": "start",
+  "conceptMaps": [
+    {
+      "_id": "start",
+      "Node": true,
+      "Theoric": true,
+      "CommonPlaceName": "Montpellier",
+      "TimeStep": {
+        "type": "now"
+      }
+    },
+    {
+      "_id": "target",
+      "TimeStep": {
+        "type": "+INF"
+      },
+      "Node": true,
+      "Theoric": true
+    },
+    {
+      "_id": "_root",
+      "Segment": true,
+      "OpenDest": [
+        {
+          "Node": true,
+          "CommonPlaceName": "Singapore"
+        }
+      ],
+      "Theoric": true,
+      "Travel": true,
+      "originNode": "start",
+      "targetNode": "target",
+      "_origin": "_root"
+    }
+  ]
+}

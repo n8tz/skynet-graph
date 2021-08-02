@@ -1,16 +1,18 @@
 /**
+ * Copyright (C) 2021  Nathanael Braun
+ 
  * @author Nathanael BRAUN
  *
  * Date: 14/01/2016
  * Time: 09:32
  */
-import TaskFlow   from "taskflows";
-import Node       from "./objects/Node";
-import Segment    from "./objects/Segment";
-import PathMap    from "./objects/PathMap";
-import Concept    from "./objects/Concept";
-import Entity     from "./objects/Entity";
-import conceptMap from "../concepts";
+import TaskFlow from "taskflows";
+import Node     from "./objects/Node";
+import Segment  from "./objects/Segment";
+import PathMap  from "./objects/PathMap";
+import Concept  from "./objects/Concept";
+import Entity   from "./objects/Entity";
+//import conceptMap from "../concepts";
 
 var isObject    = require('is').object;
 var isArray     = require('is').array;
@@ -93,7 +95,7 @@ function Graph() {
 	this.init(...arguments);
 };
 
-Graph._providers = require("../providers");
+//Graph._providers = require("../providers");
 
 Graph.PathMap = PathMap;
 Graph.Entity  = Entity;
@@ -126,13 +128,11 @@ Graph.prototype = {
 	 * @param serialized
 	 * @param conf
 	 */
-	init  : function ( record, conf, db ) {
+	init: function ( record, conf, conceptMap ) {
 		var concepts = {}, me = this,
 		    serialized;
-		this.db      = db;
 		if ( isString(record.graph) ) {
 			serialized = JSON.parse(record.graph);
-			
 		}
 		else {
 			serialized = record;
@@ -318,7 +318,7 @@ Graph.prototype = {
 	 * get a serialized json copy of the graph
 	 * @returns {{spatialEP: (*|string), servicesEP: *, timeStepEP: *, lastSpecified: (*|string), conceptMaps: Array}}
 	 */
-	serialize : function () {
+	serialize: function () {
 		var state = this._lastSyncState,
 		    map   = this._objById;
 		return {
@@ -350,7 +350,7 @@ Graph.prototype = {
 	 * Do mount the graph (instantiate all objects & mark them as unstable)
 	 * @param sg  serialized graph
 	 */
-	mount     : function ( sg, cfg ) {
+	mount : function ( sg, cfg ) {
 		var me = this, stack = [];
 		
 		// copy original state
@@ -416,7 +416,7 @@ Graph.prototype = {
 		debug.warn("graph mounted !!!!!");
 		
 	},
-	refMap    : {},//@todo same refs from same nodes should overwrite listeners when updating sub ref
+	refMap: {},//@todo same refs from same nodes should overwrite listeners when updating sub ref
 	/**
 	 *
 	 * Will walk in scopes to get some value or to put a watcher
@@ -427,7 +427,7 @@ Graph.prototype = {
 	 *                    (so it will warn object that the stuff it ask is now here)
 	 * @returns {targeted value}
 	 */
-	getRef    : function ( exp, scope, follow, unref, getBox ) {
+	getRef: function ( exp, scope, follow, unref, getBox ) {
 		let cScope = isString(scope) && this.getEtty(scope) || scope || this.getEtty(this.cfg.defaultContext),
 		    refId  = cScope && cScope._ && (cScope._._id + '::' + exp),
 		    keyRefId,
@@ -549,7 +549,7 @@ Graph.prototype = {
 	 * @param to
 	 * @returns {Array.<T>}
 	 */
-	getRevisionsRange : function ( from, to ) {
+	getRevisionsRange: function ( from, to ) {
 		debug.log(" getRevisionsRange", from, to);
 		
 		return this._revs.slice(from, to);
@@ -568,7 +568,7 @@ Graph.prototype = {
 	 * @param token
 	 * @param resetRevs
 	 */
-	pushAtomicUpdates     : function ( from, to, atoms, token, resetRevs ) {
+	pushAtomicUpdates: function ( from, to, atoms, token, resetRevs ) {
 		// !__SERVER__ &&
 		var me      = this,
 		    i       = 0,
@@ -655,7 +655,7 @@ Graph.prototype = {
 	 * @param tSegment
 	 * @returns {Array}
 	 */
-	getMutationFromPath : function ( path, descrs, tSegment ) {
+	getMutationFromPath: function ( path, descrs, tSegment ) {
 		var
 			me  = this,
 			tpl = path.slice(0);
@@ -706,7 +706,7 @@ Graph.prototype = {
 	 * @param cId the concept id
 	 * @param cb
 	 */
-	unCastConcept       : function ( cmapId, cId, cb ) {
+	unCastConcept: function ( cmapId, cId, cb ) {
 		if ( this._objById[cmapId]._etty._._autokill ) return;
 		var me = this, key = cmapId + '/' + cId;
 		if ( this._triggeredCast[key] )
@@ -729,7 +729,7 @@ Graph.prototype = {
 	 * @param cId the concept id
 	 * @param cb
 	 */
-	castConcept         : function ( cmapId, cId, cb ) {
+	castConcept   : function ( cmapId, cId, cb ) {
 		if ( this._objById[cmapId]._etty._._autokill ) return;
 		var me = this, key = cmapId + '/' + cId;
 		// debug.warn("---------------- Cast", cmapId);
@@ -740,7 +740,7 @@ Graph.prototype = {
 		this.toggleGraphObjectState(cmapId, "unstable");
 		this.stabilize(cb);
 	},
-	pushAtomicData      : function ( data, revFrom, token ) {
+	pushAtomicData: function ( data, revFrom, token ) {
 		var me = this;
 		debug.log("Start pushing from client %j", revFrom);
 		token = isArray(token) ? token : token && [token] || [];
@@ -766,7 +766,7 @@ Graph.prototype = {
 	 * @param keepRev
 	 * @param atomId
 	 */
-	pushMutation        : function ( template, targetId, force, atomId, initialRefBag, cb ) {
+	pushMutation: function ( template, targetId, force, atomId, initialRefBag, cb ) {
 		//debug.log("Start pushing mutation %j", template);
 		
 		template           = isArray(template) ? template : [template];
@@ -1171,7 +1171,7 @@ Graph.prototype = {
 	 * then call cb
 	 * @param cb
 	 */
-	stabilize             : function ( cb ) {
+	stabilize: function ( cb ) {
 		var me = this;
 		// debugger;
 		cb && this.on("stabilize", function stabilize() {
@@ -1188,7 +1188,7 @@ Graph.prototype = {
 	 * Call the sync method passed in the cfg (should send last atoms to the server/client)
 	 * @param _cb
 	 */
-	sync                  : function ( _cb ) {
+	sync: function ( _cb ) {
 		var me    = this,
 		    token = this.cfg.doSync
 			    && this.cfg.doSync(this, _cb);
@@ -1202,7 +1202,7 @@ Graph.prototype = {
 	/**
 	 * mk all object unstable
 	 */
-	destabilizeThemAll    : function () {
+	destabilizeThemAll: function () {
 		Object.keys(this._objById).map(( k ) => this.toggleGraphObjectState(k, 'unstable'), this);
 	},
 	/**
@@ -1276,7 +1276,7 @@ Graph.prototype = {
 		return [];
 	},
 	
-	pushPath        : function ( path, edgeId, name, cb ) {
+	pushPath: function ( path, edgeId, name, cb ) {
 		
 		var
 			me                = this,
@@ -1313,8 +1313,8 @@ Graph.prototype = {
 			),
 			...this.getMutationFromPath(tpl, path.descr, edgeId),
 			{
-				$_id      : '$' + edgeId,
-				OpenPaths : false,
+				$_id     : '$' + edgeId,
+				OpenPaths: false,
 				// Stay        : null,
 				// Travel      : null,
 				PathIgnore: !scope._.KeepInPath,// <- /!\ this will hide the segment in the debug graph and navline
@@ -1331,7 +1331,7 @@ Graph.prototype = {
 				$_id        : "$UserRecord",
 				loadingSteps: false,
 				// cFocusedEdge : tId2,
-				staysCount  : me.selectMapsId(["Stay"], ["VendorStep"]).length
+				staysCount: me.selectMapsId(["Stay"], ["VendorStep"]).length
 			}
 		];
 		// if (
@@ -1437,7 +1437,7 @@ Graph.prototype = {
 	 *
 	 * @param origin
 	 */
-	getChildPath    : function ( origin, forceNoTheoric, idOnly ) {
+	getChildPath: function ( origin, forceNoTheoric, idOnly ) {
 		// origin                    = origin ;
 		// we want paths
 		var map                   = this._objById,
@@ -1629,7 +1629,7 @@ Graph.prototype = {
 	 * @param id
 	 * @returns {*}
 	 */
-	getObjById               : function ( id ) {
+	getObjById: function ( id ) {
 		return this._objById[id];
 	},
 	
@@ -1638,7 +1638,7 @@ Graph.prototype = {
 	 * @param id
 	 * @returns {*}
 	 */
-	getEtty   : function ( id ) {
+	getEtty: function ( id ) {
 		return this._objById[id] && this._objById[id]._etty;
 	},
 	/**
@@ -1647,7 +1647,7 @@ Graph.prototype = {
 	 * @param _without Array
 	 * @returns {array|*|Array}
 	 */
-	queryMaps : function ( query ) {
+	queryMaps: function ( query ) {
 		
 		var me   = this,
 		    maps = this._objById,
@@ -1709,14 +1709,14 @@ Graph.prototype = {
 	
 	// -------------------------------------------------------------------------- events
 	
-	on              : function ( evt, cb ) {
+	on: function ( evt, cb ) {
 		if ( !isFunction(cb) ) throw 'wtf';
 		
 		this._on[evt] = this._on[evt] || [];
 		this._on[evt].push(cb);
 		
 	},
-	un              : function ( evt, cb ) {
+	un: function ( evt, cb ) {
 		//this._on[evt] = this._on[evt]||[];
 		if ( !this._on[evt] ) return;
 		var i = this._on[evt].indexOf(cb);
@@ -1745,7 +1745,7 @@ Graph.prototype = {
 	/**
 	 * clean & unref
 	 */
-	destroy         : function () {
+	destroy: function () {
 		this._taskFlow.kill();
 		var me = this;
 		this._on.destroy

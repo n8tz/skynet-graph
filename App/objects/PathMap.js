@@ -1,4 +1,6 @@
 /**
+ * Copyright (C) 2021  Nathanael Braun
+ 
  * @author Nathanael BRAUN
  *
  * Date: 19/01/2016
@@ -8,7 +10,8 @@
 var isArray    = require('is').array;
 var isFunction = require('is').fn;
 var isString   = require('is').string;
-import shortid                   from "shortid";
+import shortid from "shortid";
+
 //import {Skycube, SkycubeBuilder} from "@aetheris/skycube";
 
 function PathMap( PathMap, graph, pathOrigin ) {
@@ -28,7 +31,7 @@ PathMap.prototype = {
 	 *
 	 * @param PathMap : serialized path list from graph:getPaths
 	 */
-	init : function ( PathMap ) {
+	init: function ( PathMap ) {
 		this._         = PathMap;
 		this._._id     = this._._id || shortid.generate();
 		this._selected = [];
@@ -72,7 +75,7 @@ PathMap.prototype = {
 	 * @param map Get the hashMap instead of the cbox
 	 * @returns {Array}
 	 */
-	getAll                : function ( p, map ) {
+	getAll: function ( p, map ) {
 		var s = [];
 		for ( var o in this._.maps ) {
 			if ( this._.maps.hasOwnProperty(o) && this._.maps[o][p] )
@@ -116,7 +119,7 @@ PathMap.prototype = {
 	 * @param _without
 	 * @returns {PathMap}
 	 */
-	selectPaths           : function ( _with, _without ) {
+	selectPaths: function ( _with, _without ) {
 		var i               = 0, p,
 		    lib             = this._.maps,
 		    ni,
@@ -167,7 +170,7 @@ PathMap.prototype = {
 	 * @param query
 	 * @returns {PathMap}
 	 */
-	selectPathsFromQuery  : function ( query ) {
+	selectPathsFromQuery: function ( query ) {
 		var i               = 0, p,
 		    lib             = this._.maps,
 		    ni,
@@ -227,7 +230,7 @@ PathMap.prototype = {
 	 * @param query {fn|string} query of function that select the maps
 	 * @returns {array|*|Array}
 	 */
-	queryMapsOnPath  : function ( path, query ) {
+	queryMapsOnPath: function ( path, query ) {
 		
 		var me       = this,
 		    selected = path._isPath ? path.tpl : this._paths[path] || [],
@@ -301,7 +304,7 @@ PathMap.prototype = {
 	 * @param i
 	 * @returns {{_pmap: PathMap, tpl: *, descr: *}}
 	 */
-	getPath          : function ( i ) {
+	getPath         : function ( i ) {
 		var path        = this._paths[i] || [],
 		    lib         = this._.maps,
 		    relatedById = {},
@@ -318,8 +321,8 @@ PathMap.prototype = {
 			}
 		);
 		return {
-			_id       : this._._id + '::' + i,// should be an unique key sync to the query graph params or an unique
-		                                      // path hash
+			_id: this._._id + '::' + i,// should be an unique key sync to the query graph params or an unique
+		                               // path hash
 			_isPath   : true,
 			tpl       : path,
 			relatedTpl: related,//@todo add bagrefs
@@ -329,11 +332,11 @@ PathMap.prototype = {
 			descr         : this.getPathDescriptor(i)
 		};
 	},
-	getPaths         : function () {
+	getPaths        : function () {
 		return this._paths
 			&& this._paths.map(( p, i ) => this.getPath(i)) || [];
 	},
-	getSelectedPaths : function () {
+	getSelectedPaths: function () {
 		return this._selected
 			&& this._selected.map(this.getPath.bind(this)) || [];
 	},
@@ -351,7 +354,7 @@ PathMap.prototype = {
 					dur = map.DefaultDuration || map.TimePeriod && map.TimePeriod.duration && map.TimePeriod.duration.ms || 60000;
 					if ( map.shape ) {
 						lastShape = {
-							_origin      : map._id,
+							_origin: map._id,
 							// etty          : map,
 							duration     : dur,
 							transportType: map.transportType || 'pedestrian',
@@ -363,7 +366,7 @@ PathMap.prototype = {
 					else if ( dur ) {
 						
 						lastShape = {
-							_origin      : map._id,
+							_origin: map._id,
 							// etty          : map,
 							duration     : dur,
 							transportType: map.transportType || 'pedestrian',
@@ -397,7 +400,7 @@ PathMap.prototype = {
 				if ( map.Segment ) {
 					if ( map.shape ) {
 						lastShape = {
-							_origin      : map._id,
+							_origin: map._id,
 							// etty          : map,
 							transportType: map.transportType,
 							related      : [],
@@ -408,7 +411,7 @@ PathMap.prototype = {
 					else {
 						
 						lastShape = {
-							_origin      : map._id,
+							_origin: map._id,
 							// etty          : map,
 							transportType: map.transportType,
 							related      : [],
@@ -495,7 +498,7 @@ PathMap.prototype = {
 	 *                    (so it will warn object that the stuff it ask is now here)
 	 * @returns {targeted value}
 	 */
-	getRef            : function ( exp, scope, follow, unref ) {
+	getRef: function ( exp, scope, follow, unref ) {
 		var cScope = scope;
 		exp        = exp.split('.');
 		
@@ -546,7 +549,7 @@ PathMap.prototype = {
 	 * @param i can be the path object OR the path indice in the pathMap
 	 * @returns {Array}
 	 */
-	getPathDescriptor : function ( i, type ) {
+	getPathDescriptor: function ( i, type ) {
 		var path      = i && i._isPath ? i.tpl : this._paths[i],
 		    descr,
 		    descrs    = {},
@@ -563,4 +566,4 @@ PathMap.prototype = {
 		return descrList.map(( v ) => descrs[v]);
 	}
 };
-module.exports    = PathMap;
+export default PathMap;

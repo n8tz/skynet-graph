@@ -1,0 +1,7 @@
+{
+  // target place apply to Travels
+  //"require" : "",
+  "provider" : [// if a targetNode object is requiered ask :
+    "UI::Place"
+  ]
+}

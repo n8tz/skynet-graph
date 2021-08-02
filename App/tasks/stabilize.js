@@ -1,4 +1,6 @@
 /**
+ * Copyright (C) 2021  Nathanael Braun
+ 
  * @author Nathanael BRAUN
  *
  * Date: 18/01/2016

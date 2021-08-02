@@ -1,0 +1,49 @@
+{
+  "default": {
+    "rootFolder": "App",
+    "basedOn": "component",
+    "libsPath": "./packages",
+    "vars": {
+      "rootAlias": "Skynet",
+      "entryPoint": "./App",
+      "production": true,
+      "externals": true,
+      "babelPreset": {
+        "targets": {
+          "browsers": "> 0.25%, not dead, safari >= 7, ios_saf >= 7, chrome >= 52"
+        },
+        "loose": true
+      },
+      "webpackPatch": {
+        "optimization": {
+        },
+        "devtool": "source-map"
+      }
+    },
+    "extend": [
+      "lpack-react"
+    ]
+  },
+  "staging": {
+    "rootFolder": "App",
+    "basedOn": "component",
+    "libsPath": "./packages",
+    "vars": {
+      "rootAlias": "Skynet",
+      "entryPoint": "./App",
+      "externals": true,
+      "production": false,
+      "babelPreset": {
+        "targets": {
+          "browsers": "> 0.25%, not dead, safari >= 7, ios_saf >= 7, chrome >= 52"
+        },
+        "loose": true
+      },
+      "webpackPatch": {
+      }
+    },
+    "extend": [
+      "lpack-react"
+    ]
+  }
+}

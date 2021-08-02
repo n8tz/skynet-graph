@@ -1,0 +1,16 @@
+{
+  "require": [
+    // required objects
+    "targetNode",
+    "Distance"
+  ],
+  "assert": [
+    "$Distance.inKm > 300"
+//  ],
+//  "applyMutations": [
+//    {
+//      "$_id": "_parent",
+//      "_cssSufix" : "LongTravel"
+//    }
+  ]
+}

@@ -1,1 +1,1 @@
-Copyright (C) 2019  Nathanael Braun
+Copyright (C) 2021  Nathanael Braun

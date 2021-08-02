@@ -1,0 +1,11 @@
+{
+  //
+  "require" : [
+    "targetNode",
+    "Distance",
+    "Theoric"
+  ],
+  "assert" : [
+    "$Distance.inKm < 300 "
+  ]
+}

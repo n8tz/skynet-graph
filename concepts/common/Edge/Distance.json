@@ -1,0 +1,13 @@
+{
+  // must wait the needed cast in originNode & targetNode
+  "require": [
+    "originNode:Position",
+    "targetNode:Position"
+  ],
+  //  "ensure" : [
+  //  ],
+  "provider": [
+    // if a distance object is requiered ask :
+    "CommonGeo::Distance"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "require": "Distance",
+  // entryPoints for the Segment primitive,
+  "assert": [
+    "$Distance.inKm!=0"
+  ]
+}
